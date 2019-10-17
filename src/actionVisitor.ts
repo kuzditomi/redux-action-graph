@@ -2,7 +2,7 @@ import * as ts from "typescript";
 
 export interface ActionPair{
     from: string;
-    to?: string[];
+    to: string[];
 }
 
 export function getActionPairs(program: ts.Program) : ActionPair[] {
@@ -86,7 +86,8 @@ export function getActionPairs(program: ts.Program) : ActionPair[] {
     }
 
     currentPair = {
-        from: actionTypeDisplayName
+        from: actionTypeDisplayName,
+        to: []
     };
 
     const returnTypes = getListenerReturnActionTypeNames(listenerCall);

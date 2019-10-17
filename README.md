@@ -4,7 +4,12 @@ Repo to discover data flow between redux actions
 
 ## Setup
 
-Install dependencies with
+Install graphviz: https://graphviz.gitlab.io/download/
+```
+brew install graphviz
+```
+
+Install node dependencies with
 ``` 
 npm ci
 ```
@@ -16,9 +21,10 @@ Run project with
 npm run graph -- "<<typescript files path>>"
 ```
 
-Example:
+Examples:
 ``` 
 npm run graph -- "./example/graph.example.ts"
-or
 npm run graph -- "./example/**/*.ts"
+npm run graph -- "../<<otherrepo>>/packages/app/src/**/*.ts"
 ```
+
