@@ -1,5 +1,6 @@
 import * as ts from "typescript";
 import * as glob from "glob";
+import { types } from "util";
 
 const sourceFilePath = process.argv[2] as string;
 
@@ -16,7 +17,7 @@ const program = ts.createProgram(sourceFilePaths, {});
 // pull off the typechecker instance from our program
 const checker = program.getTypeChecker();
 
-// get the source file AST
+// create TS program and get the source file ASTs
 const asts = program.getSourceFiles();
 let listenerCount = 0;
 asts.forEach(ast => {
@@ -35,6 +36,50 @@ function getListenerArgumentValue(argument: ts.Expression): string | null {
   return null;
 }
 
+function getListenerReturnActionTypeNames(listenerCall: ts.CallExpression) {
+  const listenerBody = listenerCall.parent.getChildAt(2).getChildAt(0);
+
+  const callSignatures = checker
+    .getTypeAtLocation(listenerBody)
+    .getCallSignatures();
+
+  if (callSignatures.length <= 0) {
+    return null;
+  }
+
+  const returnType = checker.getReturnTypeOfSignature(callSignatures[0]);
+
+  // TODO: implement returnType visiting for generics instead of string magic starting here
+  const returnTypeString = checker.typeToString(returnType);
+
+  if (!returnTypeString) {
+    return;
+  }
+
+  const typeNames = returnTypeString.split(" | ");
+  const actionTypeNames = typeNames
+    .map(type => {
+      if (type === "void" || type.startsWith("Promise<void")) {
+        return;
+      }
+
+      if (
+        type.startsWith("AppAction") ||
+        type.startsWith("Promise<AppAction")
+      ) {
+        const match = type.match(/<Action<([0-9a-zA-Z-_\.]+)>/);
+        if (match && match.length > 1) {
+          return match[1];
+        }
+      }
+
+      return type;
+    })
+    .filter(Boolean);
+
+  return actionTypeNames;
+}
+
 function visistListenerCall(listenerCall: ts.CallExpression) {
   listenerCount++;
   const actionTypeDisplayName = getListenerArgumentValue(
@@ -45,20 +90,15 @@ function visistListenerCall(listenerCall: ts.CallExpression) {
     return;
   }
 
-  const listenerBody = listenerCall.parent.getChildAt(2).getChildAt(0);
-
-  // console.log(checker.typeToString(checker.getTypeAtLocation(listenerBody)));
-
-  const callSignatures = checker
-    .getTypeAtLocation(listenerBody)
-    .getCallSignatures();
-
-  const returnTypes = callSignatures.map(s =>
-    checker.getReturnTypeOfSignature(s)
-  );
-
   console.log(actionTypeDisplayName);
-  console.log(returnTypes.map(rt => checker.typeToString(rt)));
+
+  const returnTypes = getListenerReturnActionTypeNames(listenerCall);
+
+  if (!returnTypes) {
+    return;
+  }
+
+  console.log(returnTypes);
   console.log("------");
 }
 
