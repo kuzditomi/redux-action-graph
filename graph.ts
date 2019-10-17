@@ -1,11 +1,14 @@
 import * as ts from "typescript";
+import * as glob from "glob";
 
-const sourceFilePaths = process.argv.slice(2);
+const sourceFilePath = process.argv[2] as string;
 
-if (!sourceFilePaths.length) {
+if (!sourceFilePath.length) {
   console.log("PLEASE PROVIDE SOURCE FILE");
   process.exit(-1);
 }
+
+let sourceFilePaths = glob.sync(sourceFilePath);
 
 // create a program instance
 const program = ts.createProgram(sourceFilePaths, {});

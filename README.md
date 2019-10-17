@@ -13,5 +13,12 @@ npm ci
 
 Run project with 
 ``` 
-npm run graph -- <<typescript files path>>
+npm run graph -- "<<typescript files path>>"
+```
+
+Example:
+``` 
+npm run graph -- "./example/graph.example.ts"
+or
+npm run graph -- "./example/**/*.ts"
 ```
