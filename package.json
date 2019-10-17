@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate-doc": "ts-node generate-doc.ts",
     "graph": "ts-node graph.ts"
   },
   "author": "",

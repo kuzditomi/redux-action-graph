@@ -1,18 +1,20 @@
-const TYPE_A = 'a';
-const TYPE_B = 'b';
+import { Type } from "typescript";
 
-function addListener(type: string) {
-  console.log(type);
+enum TYPE {
+  A = "a",
+  B = "b"
 }
 
-function a() {
-    addListener(TYPE_A);
+type B<C> = ()=>C;
+type A<B> = () => B;
+
+function addListener(param: TYPE) {
+  return callback => {};
 }
 
-function b() {
-    addListener(TYPE_B);
+function actionBCreator(): A<B<TYPE.B>> {
+  return ()=>()=>TYPE.B;
 }
-
-function c() {
-    addListener('c');
-}
+addListener(TYPE.A)(() => {
+  return actionBCreator();
+});
