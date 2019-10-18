@@ -1,15 +1,11 @@
 # redux-action-graph
 
-Repo to discover data flow between redux actions
+Repo to discover data flow between redux actions in our project.
+I used some cheat to align it to our codebase, so it probably wont work with your code out of the box. **However** feel free to look around and get inspiration! :)
 
 # Setup
 
 ## Setup graph generator
-
-Install graphviz: https://graphviz.gitlab.io/download/
-```
-brew install graphviz
-```
 
 Install node dependencies with
 ``` 
