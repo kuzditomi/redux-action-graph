@@ -1,0 +1,16 @@
+{
+  "name": "imagegenerator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node imagegenerator.ts"
+  },
+  "dependencies": {
+    "@types/graphviz": "0.0.30",
+    "graphviz": "0.0.9",
+    "ts-node": "^8.4.1"
+  },
+  "author": "",
+  "license": "ISC"
+}

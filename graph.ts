@@ -1,7 +1,7 @@
 import * as ts from "typescript";
 import * as glob from "glob";
 import { getActionPairs } from "./src/actionVisitor";
-import * as graphviz from "graphviz";
+import { generateJson } from "./src/jsongenerator";
 
 const sourceFilePath = process.argv[2] as string;
 
@@ -12,22 +12,8 @@ if (!sourceFilePath.length) {
 
 let sourceFilePaths = glob.sync(sourceFilePath);
 
-// create a program instance
 const program = ts.createProgram(sourceFilePaths, {});
 const actionPairs = getActionPairs(program);
-console.log(actionPairs);
 
-// draw graph
-var g = graphviz.digraph("G");
-
-actionPairs.forEach(pair => {
-  g.addNode(pair.from, { color: "blue" });
-
-  pair.to.forEach(to => {
-    g.addNode(to, { color: "blue" });
-    g.addEdge(pair.from, to).set("color", "red");
-  });
-});
-
-g.setGraphVizPath("/usr/local/bin");
-g.output("png", "graph.png");
+generateJson(actionPairs, "graph-data.json");
+generateJson(actionPairs, "viewer/src/graph-data.json");

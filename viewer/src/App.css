@@ -1,0 +1,8 @@
+html, body, #root, .App, #graph-id-graph-wrapper{
+  height: 100%;
+  width: 100%;
+}
+.App {
+  text-align: center;
+  background-color: #282c34;
+}

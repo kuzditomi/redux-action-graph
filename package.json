@@ -4,15 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "graph": "ts-node graph.ts"
+    "graph": "ts-node graph.ts",
+    "viewer": "cd viewer && npm run start",
+    "image": "cd imagegenerator && npm run start"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/glob": "^7.1.1",
     "@types/node": "^12.11.1",
+    "fs": "0.0.1-security",
     "glob": "^7.1.4",
-    "graphviz": "0.0.9",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.4"
   }
